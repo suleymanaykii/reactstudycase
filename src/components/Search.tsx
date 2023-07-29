@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import {Form, Button, Row, Col, Card} from 'react-bootstrap';
 
 const Search = () => {
     const [keyword, setKeyword] = useState('');
@@ -25,36 +26,44 @@ const Search = () => {
                     setRandomQuote(randomQuoteText);
                     setError('');
                 } else {
-                    setError('Aranan kelimeye uygun alıntı bulunamadı.');
-                    setRandomQuote(null); // Alıntı bulunamazsa null olarak ayarlayalım
+                    setError('No quotation found for the search term.');
+                    setRandomQuote(null); // Let's set it to null if the quote is not found
                 }
             })
             .catch(error => {
                 setError(error);
-                setRandomQuote(null); // Hata durumunda da null olarak ayarlayalım
+                setRandomQuote(null); //  Let's set it to null in case of error
             });
     };
 
     return (
-        <div className="container">
-            <h1>Search</h1>
-            <div className="search-bar">
-                <input
-                    type="text"
-                    placeholder="Aranacak kelimeyi girin"
-                    value={keyword}
-                    onChange={handleKeywordChange}
-                />
-                <button onClick={handleSearchClick}>Search</button>
-            </div>
-            {randomQuote !== null && ( // null kontrolü ekleyelim
-                <div className="quote-container">
-                    <p className="quote">{randomQuote}</p>
-                </div>
-            )}
-            {error && <p className="error">{error}</p>}
-        </div>
+        <Card>
+            <Card.Body>
+                <Form>
+                    <Form.Group className="mb-3 mt-3 m-3">
+                        <Row>
+                            <Col xl={3}>
+                                <Form.Control className="mb-3" type="text"
+                                              placeholder="Aranacak kelimeyi girin"
+                                              value={keyword}
+                                              onChange={handleKeywordChange} />
+                            </Col>
+                            <Col xl={3}>
+                                <Button onClick={handleSearchClick}>Search</Button></Col>
+                        </Row>
+
+                        <Card.Title>
+                            {randomQuote !== null && ( // null kontrolü ekleyelim
+                                <div className="quote-container">
+                                    <p className="quote">{randomQuote}</p>
+                                </div>
+                            )}
+                            {error && <p className="error text-danger">{error}</p>}
+                        </Card.Title>
+                    </Form.Group>
+                </Form>
+            </Card.Body>
+         </Card>
     );
 };
-//test
 export default Search;

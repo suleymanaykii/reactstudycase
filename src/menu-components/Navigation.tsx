@@ -1,22 +1,23 @@
-import React from 'react';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 import { Link } from 'react-router-dom';
 
-const Navigation = () => {
+function CollapsibleExample() {
     return (
-        <nav>
-            <ul>
-                <li>
-                    <Link to="/">Ana Sayfa</Link>
-                </li>
-                <li>
-                    <Link to="/categories">Kategoriler</Link>
-                </li>
-                <li>
-                    <Link to="/search">Search</Link>
-                </li>
-            </ul>
-        </nav>
+        <Navbar bg="light" data-bs-theme="light" collapseOnSelect expand="lg" className="bg-body-tertiary">
+            <Container>
+                <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                <Navbar.Collapse id="responsive-navbar-nav">
+                    <Nav className="me-auto">
+                        <Nav.Link as={Link} to="/">Home</Nav.Link>
+                        <Nav.Link as={Link} to="/categories">Categories</Nav.Link>
+                        <Nav.Link as={Link} to="/search">Search</Nav.Link>
+                    </Nav>
+                </Navbar.Collapse>
+            </Container>
+        </Navbar>
     );
-};
+}
 
-export default Navigation;
+export default CollapsibleExample;
