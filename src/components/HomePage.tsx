@@ -15,7 +15,7 @@ export default function Categories() {
                 setRandomAuthor(data[randIndex].author.split(',')[0])
             })
             .catch(error => {
-                console.error('Kategoriler alınırken bir hata oluştu:', error);
+                console.error('An error occurred while retrieving categories.', error);
             });
     };
 

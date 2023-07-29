@@ -35,7 +35,7 @@ export default function Categories() {
                 setBelieveArray(believeFilter);
             })
             .catch(error => {
-                console.error('Kategoriler alınırken bir hata oluştu', error);
+                console.error('An error occurred while retrieving categories.', error);
             });
     }, []);
     const getLoveClickValue = () => {
