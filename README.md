@@ -8,6 +8,22 @@ npm test
 
 Launches the test runner in the interactive watch mode.
 
+# Pages 
+
+src / menu-components / Main.tsx -> Which page will open when the links are clicked component
+
+src / menu-components / Navigation.tsx -> menu generated component
+
+src / components / HomePage.tsx -> This is the homepage of the app which displays the random quote as below. Component where a random quote is received and displayed after clicking the button.
+
+src / components / Categories.tsx -> This page fetches and displays a list of excerpt categories from the API (eg.
+"inspirational", "life", "love", etc.).
+
+src / components / Search.tsx -> On this page, users can enter a keyword into a search bar and click the "Search" button.
+button. A random quote is received and displayed from the API that matches the user's search keyword.
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/suleymanaykii/reactstudycase).
