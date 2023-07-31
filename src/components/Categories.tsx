@@ -26,28 +26,26 @@ const Categories: React.FC = () => {
     const [randomAuthor, setRandomAuthor] = useState<string>("");
 
     useEffect(() => {
-        const fetchData = async () => {
-        try {
-            const response = await axios.get<Quote[]>('https://type.fit/api/quotes')
-            const data: Quote[] = response.data;
-            const loveFilter: Quote[] = data.filter(item => item.text.toLowerCase().includes(loveWord.toLowerCase()));
-            const lifeFilter: Quote[] = data.filter(item => item.text.toLowerCase().includes(lifeWord.toLowerCase()));
-            const inspirationFilter: Quote[] = data.filter(item => item.text.toLowerCase().includes(inspirationWord.toLowerCase()));
-            const fateFilter: Quote[] = data.filter(item => item.text.toLowerCase().includes(fateWord.toLowerCase()));
-            const peaceFilter: Quote[] = data.filter(item => item.text.toLowerCase().includes(peaceWord.toLowerCase()));
-            const believeFilter: Quote[] = data.filter(item => item.text.toLowerCase().includes(believeWord.toLowerCase()));
+        axios.get<Quote[]>('https://type.fit/api/quotes')
+            .then(response => {
+                const data: Quote[] = response.data;
+                const loveFilter: Quote[] = data.filter(item => item.text.toLowerCase().includes(loveWord.toLowerCase()));
+                const lifeFilter: Quote[] = data.filter(item => item.text.toLowerCase().includes(lifeWord.toLowerCase()));
+                const inspirationFilter: Quote[] = data.filter(item => item.text.toLowerCase().includes(inspirationWord.toLowerCase()));
+                const fateFilter: Quote[] = data.filter(item => item.text.toLowerCase().includes(fateWord.toLowerCase()));
+                const peaceFilter: Quote[] = data.filter(item => item.text.toLowerCase().includes(peaceWord.toLowerCase()));
+                const believeFilter: Quote[] = data.filter(item => item.text.toLowerCase().includes(believeWord.toLowerCase()));
 
-            setLoveArray(loveFilter);
-            setLifeArray(lifeFilter);
-            setInspirationArray(inspirationFilter);
-            setFateArray(fateFilter);
-            setPeaceArray(peaceFilter);
-            setBelieveArray(believeFilter);
-        } catch (error: any) {
-            setError(error.message);
-        }
-    };
-        fetchData();
+                setLoveArray(loveFilter);
+                setLifeArray(lifeFilter);
+                setInspirationArray(inspirationFilter);
+                setFateArray(fateFilter);
+                setPeaceArray(peaceFilter);
+                setBelieveArray(believeFilter);
+            })
+            .catch(error => {
+                setError(error.message);
+            });
     }, []);
 
     const getRandomQuote = (quotes: Quote[]) => {

@@ -12,16 +12,17 @@ const HomePage: React.FC = () => {
     const [randomAuthor, setRandomAuthor] = useState<string>('');
     const [error, setError] = useState<string>('');
 
-    const getNewQuote = async () => {
-        try {
-            const response = await axios.get<Quote[]>('https://type.fit/api/quotes')
-            const data: Quote[] = response.data;
-            let randIndex = Math.floor(Math.random() * data.length);
-            setRandomQuote(data[randIndex].text);
-            setRandomAuthor(data[randIndex].author.split(',')[0]);
-        } catch (error: any) {
-            setError(error.message);
-        }
+    const getNewQuote = () => {
+        axios.get<Quote[]>('https://type.fit/api/quotes')
+            .then(response => {
+                const data: Quote[] = response.data;
+                let randIndex = Math.floor(Math.random() * data.length);
+                setRandomQuote(data[randIndex].text);
+                setRandomAuthor(data[randIndex].author.split(',')[0]);
+            })
+            .catch(error => {
+                setError(error.message);
+            });
     };
 
     return (
