@@ -1,8 +1,8 @@
-#project install and start
+# Project install and start
 
 npm install -> after the installation is finished -> npm start 
 
-#test run 
+# Test run 
 
 npm test
 
