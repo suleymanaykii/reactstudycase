@@ -26,9 +26,11 @@ describe('Navigation', () => {
         );
 
 
+        // Click the toggle button
         const toggleButton = screen.getByRole('button', { name: /toggle navigation/i });
         fireEvent.click(toggleButton);
 
+        // After clicking the toggle button, the menu should be visible
         expect(screen.getByText('Home')).toBeVisible();
         expect(screen.getByText('Categories')).toBeVisible();
         expect(screen.getByText('Search')).toBeVisible();

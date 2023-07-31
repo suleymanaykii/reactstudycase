@@ -1,29 +1,31 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import {Form, Button, Row, Col, Card} from 'react-bootstrap';
+import { Form, Button, Row, Col, Card, Alert } from 'react-bootstrap';
 
-const Search = () => {
-    const [keyword, setKeyword] = useState('');
-    const [randomQuote, setRandomQuote] = useState(null);
-    const [error, setError] = useState('');
-    let quotes: any;
-    let randomIndex: number;
-    let matchingQuotes: any;
-    let randomQuoteText: null;
+interface Quote {
+    text: string;
+    author: string;
+}
 
-    const handleKeywordChange = (event: any) => {
+const Search: React.FC = () => {
+    const [keyword, setKeyword] = useState<string>('');
+    const [randomQuote, setRandomQuote] = useState<string | null>(null);
+    const [randomAuthor, setRandomAuthor] = useState<string>("");
+    const [error, setError] = useState<string>('');
+
+    const handleKeywordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setKeyword(event.target.value);
     };
 
     const handleSearchClick = () => {
-        axios.get('https://type.fit/api/quotes')
+        axios.get<Quote[]>('https://type.fit/api/quotes')
             .then(response => {
-                quotes = response.data;
-                matchingQuotes = quotes.filter((item: any) => item.text.toLowerCase().includes(keyword.toLowerCase()));
+                const quotes: Quote[] = response.data;
+                const matchingQuotes = quotes.filter(item => item.text.toLowerCase().includes(keyword.toLowerCase()));
                 if (matchingQuotes.length > 0) {
-                    randomIndex = Math.floor(Math.random() * matchingQuotes.length);
-                    randomQuoteText = matchingQuotes[randomIndex].text;
-                    setRandomQuote(randomQuoteText);
+                    const randomIndex = Math.floor(Math.random() * matchingQuotes.length);
+                    setRandomQuote(matchingQuotes[randomIndex].text);
+                    setRandomAuthor(matchingQuotes[randomIndex].author.split(',')[0])
                     setError('');
                 } else {
                     setError('No quotation found for the search term.');
@@ -31,8 +33,8 @@ const Search = () => {
                 }
             })
             .catch(error => {
-                setError(error);
-                setRandomQuote(null); //  Let's set it to null in case of error
+                setError('An error occurred while fetching quotes.');
+                setRandomQuote(null); // Let's set it to null in case of an error
             });
     };
 
@@ -44,26 +46,38 @@ const Search = () => {
                         <Row>
                             <Col xl={3}>
                                 <Form.Control className="mb-3" type="text"
-                                              placeholder="Aranacak kelimeyi girin"
+                                              placeholder="Enter search word"
                                               value={keyword}
                                               onChange={handleKeywordChange} />
                             </Col>
                             <Col xl={3}>
                                 <Button onClick={handleSearchClick}>Search</Button></Col>
                         </Row>
-
-                        <Card.Title>
-                            {randomQuote !== null && ( // null kontrolü ekleyelim
-                                <div className="quote-container">
-                                    <p className="quote">{randomQuote}</p>
-                                </div>
+                        <Card.Title className="mt-3">
+                            {randomQuote !== null && (
+                                <Card.Title className="quote-container">
+                                    {randomQuote}
+                                </Card.Title>
                             )}
-                            {error && <p className="error text-danger">{error}</p>}
                         </Card.Title>
+                        {randomQuote !== null && (
+                        <Card.Title className="quote-container">
+                            {randomAuthor}
+                        </Card.Title>
+                        )}
+                        {error && (
+                            <Alert variant="danger" dismissible>
+                                <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+                                <p>
+                                    {error}
+                                </p>
+                            </Alert>
+                        )}
                     </Form.Group>
                 </Form>
             </Card.Body>
-         </Card>
+        </Card>
     );
 };
+
 export default Search;

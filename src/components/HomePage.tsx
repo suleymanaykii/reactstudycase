@@ -1,22 +1,27 @@
-import { Button, Card  } from 'react-bootstrap';
+import { Alert, Button, Card } from 'react-bootstrap';
 import axios from 'axios';
-import {useState} from "react";
+import React, { useState } from 'react';
 
-export default function Categories() {
-    let [randomQuote, setRandomQuote] = useState("");
-    let [randomAuthor, setRandomAuthor] = useState("");
+interface Quote {
+    text: string;
+    author: string;
+}
 
-    const getNewQuote = () => {
-        axios.get('https://type.fit/api/quotes')
-            .then(response => {
-                const data = response.data;
-                let randIndex = Math.floor(Math.random() * data.length);
-                setRandomQuote(data[randIndex].text)
-                setRandomAuthor(data[randIndex].author.split(',')[0])
-            })
-            .catch(error => {
-                console.error('An error occurred while retrieving categories.', error);
-            });
+const HomePage: React.FC = () => {
+    const [randomQuote, setRandomQuote] = useState<string>('');
+    const [randomAuthor, setRandomAuthor] = useState<string>('');
+    const [error, setError] = useState<string>('');
+
+    const getNewQuote = async () => {
+        try {
+            const response = await axios.get<Quote[]>('https://type.fit/api/quotes')
+            const data: Quote[] = response.data;
+            let randIndex = Math.floor(Math.random() * data.length);
+            setRandomQuote(data[randIndex].text);
+            setRandomAuthor(data[randIndex].author.split(',')[0]);
+        } catch (error: any) {
+            setError(error.message);
+        }
     };
 
     return (
@@ -28,6 +33,16 @@ export default function Categories() {
                 </Card.Text>
                 <Button variant="primary" onClick={getNewQuote}>Get Quotes</Button>
             </Card.Body>
+            {error && (
+                <Alert variant="danger" dismissible>
+                    <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
+                    <p>
+                        {error}
+                    </p>
+                </Alert>
+            )}
         </Card>
     );
-}
+};
+
+export default HomePage;
