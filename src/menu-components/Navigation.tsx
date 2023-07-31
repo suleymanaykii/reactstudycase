@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 function CollapsibleExample() {
     return (
-        <Navbar bg="light" data-bs-theme="light" collapseOnSelect expand="lg" className="bg-body-tertiary">
+        <Navbar bg="light" data-bs-theme="light" collapseOnSelect expand="md" className="bg-body-tertiary">
             <Container>
                 <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                 <Navbar.Collapse id="responsive-navbar-nav">
