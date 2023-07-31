@@ -30,4 +30,13 @@ test('renders search form with input and button', () => {
         headers: {},
         config: {},
     });
+    mockedAxios.get.mockRejectedValueOnce({
+        response: {
+            status: 500,
+            data: {
+                message: 'Internal Server Error',
+            },
+        },
+        config: {},
+    });
 });
